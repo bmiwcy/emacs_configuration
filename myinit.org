@@ -1,0 +1,145 @@
+#+STARTIP: overview
+* interface tweaks
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message t)
+(tool-bar-mode -1)
+(fset 'yes-or-no-p 'y-or-n-p)
+(global-set-key (kbd "<f5>") 'revert-buffer)
+(global-linum-mode 1)
+#+END_SRC
+* try
+#+BEGIN_SRC emacs-lisp
+(use-package try
+         :ensure t)
+#+END_SRC
+* which key
+  Brings up some help
+#+BEGIN_SRC emacs-lisp
+    (use-package which-key
+           :ensure t
+           :config
+           (which-key-mode))
+#+END_SRC
+* theme
+#+BEGIN_SRC emacs-lisp
+(use-package color-theme
+    :ensure t)
+(use-package zenburn-theme
+    :ensure t
+    :config (load-theme 'zenburn t))
+#+END_SRC
+* evil
+#+BEGIN_SRC emacs-lisp 
+(require 'evil)
+(evil-mode 1)
+#+END_SRC  
+
+* jedi
+#+BEGIN_SRC emacs-lisp
+ (use-package jedi
+  :ensure t
+  :init
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (add-hook 'Python-mode-hook 'jedi:ac-setup))
+#+END_SRC
+* elpy
+#+BEGIN_SRC emacs-lisp
+ (use-package elpy
+  :ensure t
+  :config
+  (elpy-enable))
+#+END_SRC
+* yasnippet
+#+BEGIN_SRC emacs-lisp
+(use-package YASnippet
+  :ensure t
+  :init
+  (yas-global-mode 1))
+#+END_SRC
+* highlight parenthese
+#+BEGIN_SRC emacs-lisp
+    (require 'highlight-parentheses)
+    (define-globalized-minor-mode global-highlight-parentheses-mode
+      highlight-parentheses-mode
+      (lambda ()
+        (highlight-parentheses-mode t)))
+    (global-highlight-parentheses-mode t)
+#+END_SRC
+* org mode
+#+BEGIN_SRC emacs-lisp
+ ;; Org-mode stuff
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+END_SRC
+* rest of them
+#+BEGIN_SRC emacs-lisp 
+;; el-get
+(add-to-list 'load-path (locate-user-emacs-file "el-get"))
+(require 'el-get)
+;; el-getでダウンロードしたパッケージは ~/.emacs.d/ に入るようにする
+(setq el-get-dir (locate-user-emacs-file ""))
+
+(use-package auto-complete
+  :ensure t
+  :init
+  (progn
+    (ac-config-default)
+     (global-auto-complete-mode t)
+    ))
+#+END_SRC 
+* fix some python problem
+ #+BEGIN_SRC emacs-lisp
+     (setq python-shell-completion-native-enable nil)
+ #+END_SRC
+# desk top mod
+#  #+BEGIN_SRC emacs-lisp
+#    (desktop-save-mode 1)
+#  #+END_SRC
+* smartparens
+#+BEGIN_SRC emacs-lisp
+(require 'smartparens-config)
+(smartparens-global-mode t)
+#+END_SRC
+  
+* default directory
+#+BEGIN_SRC emacs-lisp
+(setq default-directory "~/")
+#+END_SRC
+* Caffe mode
+#+BEGIN_SRC emacs-lisp
+   (load-file "~/.emacs.d/caffe-mode.el")
+(add-to-list 'auto-mode-alist '("\\.prototxt\\'" . caffe-mode))
+
+#+END_SRC
+* tab space
+#+BEGIN_SRC emacs-lisp
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq indent-line-function 'insert-tab)
+#+END_SRC
+* iedit
+#+BEGIN_SRC emacs-lisp
+  (define-key global-map (kbd "C-c ;") 'iedit-mode)
+#+END_SRC
+* google style
+#+BEGIN_SRC emacs-lisp
+  (defun my:flymake-google-init ()
+    (require 'flymake-google-cpplint)
+    (custom-set-variables
+     '(flymake-google-cpplint-command "/usr/local/bin/cpplint"))
+    (flymake-google-cpplint-load)
+    )
+  (add-hook 'c-mode-hook 'my:flymake-google-init)
+  (add-hook 'c++-mode-hook 'my:flymake-google-init)
+
+  (require 'google-c-style)
+  (add-hook 'c-mode-common-hook 'google-set-c-style)
+  (add-hook 'c-mode-common-hook 'google-make-newline-indent)
+#+END_SRC
+* flycheck
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+   :ensure t
+   :init
+   (global-flycheck-mode t))   
+#+END_SRC
